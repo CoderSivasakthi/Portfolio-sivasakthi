@@ -1,0 +1,289 @@
+Build a fully production-ready software developer portfolio website using Next.js 14 (App Router), React 18, Tailwind CSS v4, and GSAP.
+The project must be frontend-only (no backend required initially) and structured for scalability, performance, accessibility, and clean maintainability.
+
+1. Core Objective
+
+Create a premium Apple-inspired portfolio for a software developer named Siva.
+The website should feel minimal, cinematic, fluid, and high-end, similar to apple.com, Linear, or Stripe, and suitable for a senior-level software engineer.
+
+2. Design & Visual Style
+Overall Look
+
+Dark-mode-first design.
+
+Apple iOS / apple.com-inspired glassmorphism UI.
+
+Clean, quiet, confident design — no clutter, no flashy effects.
+
+Glassmorphism Rules
+
+Frosted glass containers using:
+
+bg-white/10
+
+backdrop-blur-xl
+
+subtle borders (border-white/10–15)
+
+Soft depth and shadows.
+
+Large rounded corners (pill and card-style).
+
+Color System
+
+Base: deep blacks and dark greys.
+
+Text: off-white with hierarchy via opacity.
+
+Accent: very subtle yellow / violet / blue tint only for CTAs.
+
+No neon colors, no heavy gradients.
+
+Typography
+
+Clean modern sans-serif (Apple-like).
+
+Large headings with generous spacing.
+
+Calm reading rhythm.
+
+3. Navbar (Must Match Reference Style)
+
+Floating pill-shaped navbar centered at the top.
+
+Glass background with blur.
+
+Rounded-full container.
+
+Left: logo or icon.
+
+Center: navigation links.
+
+Right: highlighted CTA button.
+
+Navbar Links
+
+About
+
+Works
+
+Twitter
+
+Dribbble
+
+LinkedIn
+
+CTA Button
+
+Highlighted accent color.
+
+Rounded-full.
+
+Subtle hover scale.
+
+4. Animation & Interaction Requirements
+GSAP Usage
+
+Use GSAP for all animations.
+
+Smooth, natural easing (power3.out, expo.out).
+
+No over-animation.
+
+Required Animations
+
+Hero typing animation for the name.
+
+Scroll-triggered reveal animations for sections.
+
+Staggered entrance animations for cards.
+
+Subtle parallax depth where appropriate.
+
+Magnetic hover effect on buttons and interactive cards.
+
+Motion Rules
+
+Performance-first.
+
+Respect prefers-reduced-motion.
+
+Animations must enhance storytelling, not distract.
+
+5. Custom Cursor
+
+Replace default cursor with a custom Apple-style cursor.
+
+Minimal circular design.
+
+Smooth trailing motion.
+
+Subtle scale or opacity change on hover and click.
+
+Cursor must:
+
+Be disabled for reduced-motion users.
+
+Not interfere with text selection or inputs.
+
+6. Pages & Content Structure
+Home Page (/)
+
+Sections must appear in the following order:
+
+1. Hero Section
+
+Full viewport height.
+
+Centered layout.
+
+Name: Siva
+
+Subtitle: Software Engineer · Full Stack · AI & Systems
+
+Short professional description:
+“Building scalable, intelligent, production-grade platforms with clarity and impact.”
+
+Two CTA buttons:
+
+View Projects
+
+Download Resume
+
+2. About Section
+
+Storytelling-style copy.
+
+Focus on:
+
+Problem-solving
+
+System thinking
+
+Product mindset
+
+3. Skills Section
+
+Glass card grid.
+
+Categories:
+
+Frontend
+
+Backend
+
+AI / ML
+
+Databases
+
+DevOps
+
+System Design
+
+4. Projects Section
+
+Apple-style product showcase.
+
+Clean cards with:
+
+Project name
+
+One-line description
+
+Action buttons (case study / demo)
+
+5. Experience Section
+
+Timeline layout.
+
+Hackathons, achievements, professional experience.
+
+6. Contact Section
+
+Minimal, professional.
+
+Focused on outreach.
+
+7. Footer
+
+Simple copyright.
+
+7. Case Study Page
+/voltAura
+
+Create a dedicated Apple-style case study page for VoltAura.
+
+Include realistic, professional mock content with:
+
+Problem
+
+Solution
+
+Architecture & Approach
+
+Tech Stack
+
+Impact & Outcomes
+
+The layout should feel like a product story, not documentation.
+
+8. Analytics Dashboard Page
+/analytics
+
+Build a dedicated analytics & interaction dashboard using the same glassmorphism style.
+
+Display the following metrics (mock or frontend-tracked):
+
+Portfolio view count
+
+Resume view count
+
+Resume download count
+
+Live session duration
+
+Screenshot or interaction count
+
+Visitor comments / feedback UI
+
+Analytics UI
+
+Glass metric cards.
+
+GSAP-animated counters.
+
+Clean grid layout.
+
+Fully responsive.
+
+9. Technical Requirements
+
+Next.js 14 (App Router).
+
+React 18.
+
+Tailwind CSS v4 with @tailwindcss/postcss.
+
+GSAP for animations.
+
+Frontend-only architecture.
+
+Clean, modular folder structure.
+
+SEO-friendly.
+
+Lighthouse-friendly performance.
+
+10. Code Quality Expectations
+
+Production-ready code.
+
+Clean separation of concerns.
+
+Reusable components.
+
+No placeholder hacks.
+
+Suitable for a senior developer portfolio, not a demo or tutorial project.
+
+Build the entire project end-to-end with best practices, polished UI, and professional engineering standards.
