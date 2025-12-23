@@ -17,7 +17,7 @@ const navLinks: NavLink[] = [
   { href: "#projects", label: "Works" },
   { href: "/analytics", label: "Analytics", isRoute: true },
   { href: "https://twitter.com", label: "Twitter", external: true },
-  { href: "https://linkedin.com", label: "LinkedIn", external: true },
+  { href: "www.linkedin.com/in/siva-sakthi-smartvoltninja-url", label: "LinkedIn", external: true },
 ];
 
 export default function Navbar() {
@@ -73,7 +73,7 @@ export default function Navbar() {
           className="flex items-center justify-center w-9 h-9 rounded-full bg-white/10 text-foreground font-semibold text-sm ml-1"
           data-testid="link-logo"
         >
-          S
+          Siva
         </Link>
 
         <div className="hidden md:flex items-center gap-1">
