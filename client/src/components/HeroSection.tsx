@@ -1,35 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Download } from "lucide-react";
 import gsap from "gsap";
-const siva = "/pic.png";
+import SplitText from "./SplitText";
+import VaporizeImage from "./ui/VaporizeImage";
+const siva = "./pic.png";
 import "./HeroSection.css";
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const nameRef = useRef<HTMLHeadingElement>(null);
 
-  const [displayedName, setDisplayedName] = useState("");
-  const fullName = "Siva Sakthi";
 
-  /* ---------------- Typing Effect ---------------- */
-  useEffect(() => {
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) {
-      setDisplayedName(fullName);
-      return;
-    }
-
-    let index = 0;
-    const interval = setInterval(() => {
-      setDisplayedName(fullName.slice(0, index));
-      index++;
-      if (index > fullName.length) clearInterval(interval);
-    }, 150);
-
-    return () => clearInterval(interval);
-  }, []);
 
   /* ---------------- Entrance Animation ---------------- */
   useEffect(() => {
@@ -80,6 +62,10 @@ export default function HeroSection() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  const handleNameAnimationComplete = () => {
+    console.log("Name animation completed");
+  };
+
   const scrollToProjects = () => {
     document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -99,13 +85,22 @@ export default function HeroSection() {
         
         {/* -------- Left Content -------- */}
         <div className="text-center lg:text-left max-w-3xl mt-12">
-          <h1
-            ref={nameRef}
-            className="text-6xl sm:text-xl md:text-8xl lg:text-9xl font-bold tracking-tight text-foreground mb-6"
-          >
-            {displayedName}
-            <span className="inline-block w-1 h-16 sm:h-20 md:h-24 bg-primary ml-2 animate-pulse" />
-          </h1>
+          <SplitText
+            text="Siva Sakthi"
+            tag="h1"
+            className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-foreground mb-6"
+            delay={280}
+            duration={2}
+            ease="elastic.out(1,0.3)"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="left"
+            onLetterAnimationComplete={handleNameAnimationComplete}
+            immediate={true}
+          />
 
           <p className="animate-in text-lg sm:text-xl md:text-2xl text-foreground/70 mb-4">
             Engineer <span className="text-primary">·</span> Builder{" "}
@@ -140,11 +135,14 @@ export default function HeroSection() {
             {/* Glow */}
             <div className="hero-image-glow" />
 
-            {/* Image */}
-            <img
+            {/* Vaporize Image Animation */}
+            <VaporizeImage
               src={siva}
               alt="AI Visual"
               className="hero-image"
+              particleSize={3}
+              animationDuration={2.5}
+              triggerOnLoad={true}
             />
           </div>
       </div>
