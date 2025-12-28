@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Canvas, extend, useFrame, useThree } from '@react-three/fiber';
-import { useTexture } from '@react-three/drei';
+import { Canvas, extend, useFrame } from '@react-three/fiber';
 import { Physics, RigidBody, useRopeJoint, useSphericalJoint, BallCollider, CuboidCollider } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
@@ -20,16 +19,14 @@ const LanyardIDCard = () => {
     <div style={{
       width: '100vw',
       height: '100vh',
-      /* background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)', // Remove background for transparent effect */
       position: 'relative',
       top: '-50px',
-      borderRadius:'10px',
+      borderRadius: '10px',
     }}>
       <Canvas
         camera={{ position: [0, 0, 30], fov: 20 }}
         dpr={[1, isMobile ? 1.5 : 2]}
       >
-        {/* <color attach="background" args={['#1e1b4b']} /> // Remove canvas background for transparency */}
         <ambientLight intensity={Math.PI * 0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
         <pointLight position={[-10, -10, -10]} intensity={0.5} />
@@ -65,7 +62,7 @@ const Band = ({ maxSpeed = 50, minSpeed = 0, isMobile = false }) => {
     linearDamping: 4
   };
 
-  // Create lanyard texture
+  // Create enhanced lanyard texture with more visible pattern
   const lanyardTexture = useRef();
   useEffect(() => {
     const canvas = document.createElement('canvas');
@@ -73,9 +70,9 @@ const Band = ({ maxSpeed = 50, minSpeed = 0, isMobile = false }) => {
     canvas.height = 50;
     const ctx = canvas.getContext('2d');
 
-    // Create black textured pattern
+    // Create darker textured pattern with more contrast
     for (let i = 0; i < canvas.width; i += 20) {
-      ctx.fillStyle = i % 40 === 0 ? '#1a1a1a' : '#2d2d2d';
+      ctx.fillStyle = i % 40 === 0 ? '#0a0a0a' : '#1a1a1a';
       ctx.fillRect(i, 0, 20, canvas.height);
     }
 
@@ -156,13 +153,13 @@ const Band = ({ maxSpeed = 50, minSpeed = 0, isMobile = false }) => {
       <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
-          <BallCollider args={[0.1]} />
+          <BallCollider args={[0.15]} />
         </RigidBody>
         <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}>
-          <BallCollider args={[0.1]} />
+          <BallCollider args={[0.15]} />
         </RigidBody>
         <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}>
-          <BallCollider args={[0.1]} />
+          <BallCollider args={[0.15]} />
         </RigidBody>
 
         {/* Card with physics */}
@@ -188,18 +185,18 @@ const Band = ({ maxSpeed = 50, minSpeed = 0, isMobile = false }) => {
               drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())));
             }}
           >
-            {/* ID Card with HTML/CSS styling */}
+            {/* ID Card with glassmorphism effect */}
             <IDCardMesh ref={cardMesh} />
           </group>
         </RigidBody>
       </group>
 
-      {/* Lanyard band/strap */}
+      {/* Enhanced lanyard band/strap - thicker and darker */}
       <mesh ref={band}>
         <meshLineGeometry />
         <meshLineMaterial
-          color="#1a1a1a"
-          lineWidth={1}
+          color="#0a0a0a"
+          lineWidth={2.5}
           resolution={isMobile ? [1000, 2000] : [1000, 1000]}
           map={lanyardTexture.current}
           useMap={!!lanyardTexture.current}
@@ -212,94 +209,108 @@ const Band = ({ maxSpeed = 50, minSpeed = 0, isMobile = false }) => {
 };
 
 const IDCardMesh = React.forwardRef((props, ref) => {
-  const htmlTexture = useRef();
   const [texture, setTexture] = useState(null);
 
   useEffect(() => {
-    // Create HTML canvas for ID card
+    // Create HTML canvas for glassmorphism ID card
     const canvas = document.createElement('canvas');
-    const scale = 2; // Higher resolution
+    const scale = 2;
     canvas.width = 340 * scale;
     canvas.height = 480 * scale;
     const ctx = canvas.getContext('2d');
     ctx.scale(scale, scale);
 
-    // Background gradient
+    // Transparent background with subtle gradient
     const gradient = ctx.createLinearGradient(0, 0, 340, 480);
-    gradient.addColorStop(0, '#2d3748');
-    gradient.addColorStop(1, '#1a202c');
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0.05)');
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 340, 480);
 
-    // Card border
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    // Create rounded rectangle with 10px border radius
+    ctx.beginPath();
+    ctx.roundRect(0, 0, 340, 480, 10);
+    ctx.fill();
+
+    // Glass border with rounded corners
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
     ctx.lineWidth = 2;
-    ctx.strokeRect(5, 5, 330, 470);
+    ctx.beginPath();
+    ctx.roundRect(5, 5, 330, 470, 10);
+    ctx.stroke();
 
-    // Header section
+    // Header section with transparency
     const headerGradient = ctx.createLinearGradient(0, 0, 340, 80);
-    headerGradient.addColorStop(0, '#4a5568');
-    headerGradient.addColorStop(1, '#2d3748');
+    headerGradient.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+    headerGradient.addColorStop(1, 'rgba(255, 255, 255, 0.08)');
     ctx.fillStyle = headerGradient;
-    ctx.fillRect(0, 0, 340, 80);
+    ctx.beginPath();
+    ctx.roundRect(0, 0, 340, 80, [10, 10, 0, 0]);
+    ctx.fill();
 
     // Hole punch at top
-    ctx.fillStyle = '#0f0f1f';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
     ctx.beginPath();
     ctx.arc(170, 20, 10, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Photo placeholder
-    ctx.fillStyle = '#1a202c';
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    ctx.lineWidth = 4;
+    // Photo placeholder with glass effect
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.lineWidth = 3;
     const photoX = 70;
     const photoY = 100;
     const photoSize = 200;
-    ctx.fillRect(photoX, photoY, photoSize, photoSize);
-    ctx.strokeRect(photoX, photoY, photoSize, photoSize);
+    ctx.beginPath();
+    ctx.roundRect(photoX, photoY, photoSize, photoSize, 8);
+    ctx.fill();
+    ctx.stroke();
 
     // Photo overlay gradient
-    const photoGradient = ctx.createLinearGradient(photoX, photoY, photoX + photoSize, photoY + photoSize);
-    photoGradient.addColorStop(0, 'rgba(99, 102, 241, 0.1)');
-    photoGradient.addColorStop(0.5, 'transparent');
-    photoGradient.addColorStop(1, 'rgba(139, 92, 246, 0.1)');
+    const photoGradient = ctx.createRadialGradient(170, 200, 0, 170, 200, 100);
+    photoGradient.addColorStop(0, 'rgba(147, 197, 253, 0.15)');
+    photoGradient.addColorStop(0.5, 'rgba(196, 181, 253, 0.1)');
+    photoGradient.addColorStop(1, 'rgba(253, 186, 116, 0.08)');
     ctx.fillStyle = photoGradient;
-    ctx.fillRect(photoX, photoY, photoSize, photoSize);
+    ctx.beginPath();
+    ctx.roundRect(photoX, photoY, photoSize, photoSize, 8);
+    ctx.fill();
 
     // Text "Photo Here"
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     ctx.font = '16px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText('Your Photo', 170, 190);
     ctx.fillText('Here', 170, 210);
 
-    // Name
-    ctx.fillStyle = '#e2e8f0';
+    // Name with glow effect
+    ctx.shadowColor = 'rgba(147, 197, 253, 0.5)';
+    ctx.shadowBlur = 15;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
     ctx.font = 'bold 28px Georgia, serif';
     ctx.textAlign = 'center';
     ctx.fillText('Javi A. Torres', 170, 340);
+    ctx.shadowBlur = 0;
 
     // Title
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
     ctx.font = '16px system-ui';
     ctx.fillText('Software Engineer', 170, 365);
 
-    // Divider
-    const dividerGradient = ctx.createLinearGradient(140, 380, 200, 380);
+    // Divider with gradient
+    const dividerGradient = ctx.createLinearGradient(120, 380, 220, 380);
     dividerGradient.addColorStop(0, 'transparent');
-    dividerGradient.addColorStop(0.5, '#6366f1');
+    dividerGradient.addColorStop(0.5, 'rgba(147, 197, 253, 0.6)');
     dividerGradient.addColorStop(1, 'transparent');
     ctx.fillStyle = dividerGradient;
-    ctx.fillRect(140, 380, 60, 3);
+    ctx.fillRect(120, 380, 100, 2);
 
-    // Info box background
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    ctx.lineWidth = 1;
+    // Info box with glassmorphism
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.lineWidth = 1.5;
     const infoX = 30;
     const infoY = 395;
     const infoW = 280;
@@ -314,25 +325,25 @@ const IDCardMesh = React.forwardRef((props, ref) => {
     ctx.textAlign = 'left';
 
     // Row 1
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
     ctx.fillText('ID NUMBER', 45, 415);
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.textAlign = 'right';
     ctx.fillText('SE-2024-001', 295, 415);
 
     // Row 2
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
     ctx.fillText('DEPARTMENT', 45, 435);
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.textAlign = 'right';
     ctx.fillText('Engineering', 295, 435);
 
     // Row 3
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
     ctx.fillText('STATUS', 45, 455);
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.textAlign = 'right';
     ctx.fillText('Active', 295, 455);
 
@@ -347,9 +358,11 @@ const IDCardMesh = React.forwardRef((props, ref) => {
       <meshStandardMaterial
         map={texture}
         transparent
+        opacity={0.95}
         side={THREE.DoubleSide}
-        roughness={0.3}
-        metalness={0.1}
+        roughness={0.2}
+        metalness={0.05}
+        envMapIntensity={0.5}
       />
     </mesh>
   );
