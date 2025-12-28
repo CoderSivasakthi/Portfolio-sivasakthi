@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import GlassCard from "./GlassCard";
+import LiquidCard from "./GlassCard";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -87,7 +87,7 @@ export default function SkillsSection() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {skills.map((skill) => (
-          <GlassCard key={skill.category} className="skill-card p-6" hover>
+          <LiquidCard key={skill.category} className="skill-card p-6" hover>
             <div className="flex items-center gap-4 mb-4">
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                 <skill.icon className="w-6 h-6 text-primary" />
@@ -106,7 +106,7 @@ export default function SkillsSection() {
                 </span>
               ))}
             </div>
-          </GlassCard>
+          </LiquidCard>
         ))}
       </div>
     </section>

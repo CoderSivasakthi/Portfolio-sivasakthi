@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import GlassCard from "./GlassCard";
+import LiquidCard from "./GlassCard";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, Github } from "lucide-react";
 import { Link } from "wouter";
@@ -85,7 +85,7 @@ export default function ProjectsSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {projects.map((project, index) => (
-          <GlassCard
+          <LiquidCard
             key={project.id}
             className={`project-card p-8 ${index === 0 ? "md:col-span-2" : ""}`}
             hover
@@ -130,7 +130,7 @@ export default function ProjectsSection() {
                 </Button>
               </div>
             </div>
-          </GlassCard>
+          </LiquidCard>
         ))}
       </div>
     </section>

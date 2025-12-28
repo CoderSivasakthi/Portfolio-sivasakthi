@@ -62,10 +62,10 @@ export default function Navbar() {
       }`}
     >
       <div
-        className={`flex items-center gap-2 px-2 py-2 rounded-full backdrop-blur-xl border transition-all duration-300 ${
+        className={`flex items-center gap-2 px-2 py-2 rounded-full transition-all duration-300 ${
           isScrolled
-            ? "bg-black/60 border-white/10"
-            : "bg-white/5 border-white/10"
+            ? "bg-gradient-to-r from-black/40 via-black/30 to-black/40 backdrop-blur-sm border border-white/[0.08] shadow-lg shadow-black/10"
+            : "bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-white/[0.08] backdrop-blur-sm border border-white/[0.08] shadow-lg shadow-black/5"
         }`}
       >
         <Link
@@ -132,7 +132,7 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden mt-2 p-4 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/10">
+        <div className="md:hidden mt-2 p-4 rounded-2xl bg-gradient-to-br from-black/60 via-black/50 to-black/60 backdrop-blur-sm border border-white/[0.08] shadow-lg shadow-black/10">
           <div className="flex flex-col gap-2">
             {navLinks.map((link) =>
               link.external ? (

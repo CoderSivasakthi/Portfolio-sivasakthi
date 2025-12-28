@@ -1,15 +1,21 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Download } from "lucide-react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "./SplitText";
 import VaporizeImage from "./ui/VaporizeImage";
+import TextType from "./TextType";
 const siva = "./pic.png";
 import "./HeroSection.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const [isHeroNameAnimated, setIsHeroNameAnimated] = useState(false);
+  const [hasNameAnimated, setHasNameAnimated] = useState(false);
 
 
 
@@ -62,8 +68,35 @@ export default function HeroSection() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  /* ---------------- Background Distortion on Scroll ---------------- */
+  useEffect(() => {
+    if (!heroRef.current) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) return;
+
+    const bgGlows = heroRef.current.querySelectorAll(".absolute.rounded-full");
+
+    gsap.to(bgGlows, {
+      x: (i) => (i % 2 === 0 ? 30 : -30),
+      y: (i) => (i % 2 === 0 ? -20 : 20),
+      scale: 1.1,
+      duration: 2,
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: heroRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+      },
+    });
+  }, []);
+
   const handleNameAnimationComplete = () => {
-    console.log("Name animation completed");
+    if (!hasNameAnimated) {
+      console.log("Name animation completed");
+      setHasNameAnimated(true);
+      setIsHeroNameAnimated(true);
+    }
   };
 
   const scrollToProjects = () => {
@@ -73,12 +106,13 @@ export default function HeroSection() {
   return (
     <section
       ref={heroRef}
+      id="hero"
       className="relative min-h-screen overflow-hidden px-6"
     >
       {/* Background glows */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-chart-2/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-chart-2/8 rounded-full blur-xl" />
 
       {/* Main Layout */}
       <div className="relative z-10 mx-auto max-w-7xl min-h-screen flex flex-col lg:flex-row items-center justify-center gap-16">
@@ -107,9 +141,25 @@ export default function HeroSection() {
             <span className="text-primary">·</span> AI & Systems
           </p>
 
-          <p className="animate-in text-base sm:text-lg text-muted-foreground max-w-2xl mb-12">
-            Turning ideas into reliable, scalable products through thoughtful engineering and systems thinking.
-          </p>
+          {isHeroNameAnimated && (
+            <TextType
+              text={[
+                "Welcome to my portfolio...",
+                "I'm glad to see you, and I think you've already noticed my image and how I look.",
+                "Turning ideas into reliable, scalable products through thoughtful engineering and systems thinking.",
+                "Scroll down to explore more sections — we'll meet again as you continue or reload the page. Go down and enjoy."
+              ]}
+              typingSpeed={100}
+              pauseDuration={500}
+              deletingSpeed={10}
+              showCursor={true}
+              cursorCharacter="_"
+              cursorBlinkDuration={0.5}
+              variableSpeed={{ min: 60, max: 120 }}
+
+              className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-12"
+            />
+          )}
 
           <div className="animate-in flex flex-col sm:flex-row gap-4">
             <Button

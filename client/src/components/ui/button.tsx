@@ -21,6 +21,8 @@ const buttonVariants = cva(
         secondary: "border bg-secondary text-secondary-foreground border border-secondary-border ",
         // Add a transparent border so that when someone toggles a border on later, it doesn't shift layout/size.
         ghost: "border border-transparent",
+        // Liquid glass variant for modern iOS-style buttons
+        liquid: "relative overflow-hidden bg-gradient-to-br from-white/[0.08] via-white/[0.04] to-white/[0.02] backdrop-blur-sm border border-white/[0.08] shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 hover:after:opacity-100 after:absolute after:inset-0 after:rounded-md after:bg-gradient-to-br after:from-white/[0.1] after:to-transparent after:opacity-0 after:transition-opacity after:duration-300 active:scale-[0.98] transition-all duration-200 ease-out",
       },
       // Heights are set as "min" heights, because sometimes Ai will place large amount of content
       // inside buttons. With a min-height they will look appropriate with small amounts of content,

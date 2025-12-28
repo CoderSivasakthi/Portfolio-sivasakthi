@@ -10,6 +10,7 @@ export default defineConfig({
     outDir: "dist",
     emptyOutDir: true,
   },
+  assetsInclude: ['**/*.glb'],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client/src"),
