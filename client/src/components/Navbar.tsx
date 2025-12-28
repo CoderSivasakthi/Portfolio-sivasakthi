@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import gsap from "gsap";
 import { useRef } from "react";
+import { TubelightIndicator } from "@/components/ui/tubelight-indicator";
 
 interface NavLink {
   href: string;
@@ -23,6 +24,7 @@ const navLinks: NavLink[] = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
   const navRef = useRef<HTMLElement>(null);
   const [location] = useLocation();
 
@@ -44,6 +46,45 @@ export default function Navbar() {
     }
   }, []);
 
+  useEffect(() => {
+    if (location === "/analytics") {
+      setActiveSection("Analytics");
+    } else {
+      setActiveSection("");
+    }
+  }, [location]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navLinks
+        .filter(link => link.href.startsWith("#"))
+        .map(link => ({
+          id: link.href.substring(1),
+          label: link.label,
+          element: document.getElementById(link.href.substring(1))
+        }))
+        .filter(section => section.element);
+
+      const scrollPosition = window.scrollY + 100; // Offset for navbar height
+
+      for (const section of sections) {
+        const element = section.element!;
+        const offsetTop = element.offsetTop;
+        const offsetHeight = element.offsetHeight;
+
+        if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+          setActiveSection(section.label);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Call once to set initial active section
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const scrollToSection = (href: string) => {
     if (href.startsWith("#")) {
       const element = document.querySelector(href);
@@ -52,6 +93,11 @@ export default function Navbar() {
       }
     }
     setMobileMenuOpen(false);
+  };
+
+  const handleActivate = (label: string, href: string) => {
+    setActiveSection(label);
+    scrollToSection(href);
   };
 
   return (
@@ -90,23 +136,30 @@ export default function Navbar() {
                 {link.label}
               </a>
             ) : link.isRoute ? (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="px-4 py-2 text-sm text-foreground/70 hover:text-foreground transition-colors rounded-full"
-                data-testid={`link-nav-${link.label.toLowerCase()}`}
-              >
-                {link.label}
-              </Link>
+              <div className="relative">
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setActiveSection(link.label)}
+                  className="px-4 py-2 text-sm text-foreground/70 hover:text-foreground transition-colors rounded-full"
+                  data-testid={`link-nav-${link.label.toLowerCase()}`}
+                >
+                  {link.label}
+                </Link>
+                {activeSection === link.label && <TubelightIndicator />}
+              </div>
             ) : (
-              <button
-                key={link.label}
-                onClick={() => scrollToSection(link.href)}
-                className="px-4 py-2 text-sm text-foreground/70 hover:text-foreground transition-colors rounded-full"
-                data-testid={`button-nav-${link.label.toLowerCase()}`}
-              >
-                {link.label}
-              </button>
+              <div className="relative">
+                <button
+                  key={link.label}
+                  onClick={() => handleActivate(link.label, link.href)}
+                  className="relative px-4 py-2 text-sm rounded-full text-foreground/70 hover:text-foreground transition-colors"
+                  data-testid={`button-nav-${link.label.toLowerCase()}`}
+                >
+                  {link.label}
+                </button>
+                {activeSection === link.label && <TubelightIndicator />}
+              </div>
             )
           )}
         </div>

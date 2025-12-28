@@ -282,8 +282,7 @@ const IDCardMesh = React.forwardRef((props, ref) => {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     ctx.font = '16px system-ui';
     ctx.textAlign = 'center';
-    ctx.fillText('Your Photo', 170, 190);
-    ctx.fillText('Here', 170, 210);
+    ctx.fillText('Photo', 170, 190);
 
     // Name with glow effect
     ctx.shadowColor = 'rgba(147, 197, 253, 0.5)';
@@ -291,13 +290,13 @@ const IDCardMesh = React.forwardRef((props, ref) => {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
     ctx.font = 'bold 28px Georgia, serif';
     ctx.textAlign = 'center';
-    ctx.fillText('Javi A. Torres', 170, 340);
+    ctx.fillText('Sivasakthi', 170, 340);
     ctx.shadowBlur = 0;
 
     // Title
     ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
     ctx.font = '16px system-ui';
-    ctx.fillText('Software Engineer', 170, 365);
+    ctx.fillText('Founder of Thevoltaura', 170, 365);
 
     // Divider with gradient
     const dividerGradient = ctx.createLinearGradient(120, 380, 220, 380);
